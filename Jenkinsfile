@@ -6,6 +6,12 @@ pipeline {
             steps {
                 echo 'BUILD: Start'
 				
+				
+				//buildall task logic
+				//sh './gradlew clean test'
+				//sh './gradlew clean integrationTest'
+				//sh ./gradlew clean assemble
+				
 				// Running up Gradle buil along with JUnit
 				sh './gradlew clean build'
 				
