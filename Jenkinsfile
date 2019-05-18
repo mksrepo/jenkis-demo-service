@@ -1,11 +1,12 @@
 pipeline {
+	
+	// Why agent is 'any'?
     agent any
-
+	
     stages {
-        stage('Build') {
+        stage('Build: Gradle Clean - Test - Build') {
             steps {
                 echo 'BUILD: Start'
-				
 				
 				//buildall task logic
 				//sh './gradlew clean test'
@@ -18,15 +19,7 @@ pipeline {
 				echo 'BUILD: End'
             }
         }
-        stage('Test') {
-            steps {
-                echo 'BUILD: Start'
-				
-				
-                echo 'BUILD: End'
-            }
-        }
-        stage('Deploy') {
+        stage('Deploy: PCF Web - Servie') {
 			when {
 				branch 'master'
 			}
@@ -47,6 +40,26 @@ pipeline {
                     sh '/usr/local/bin/cf push'
                 }
                 echo 'BUILD: End'
+            }
+        }
+        stage('Publish: Nexsus Artifactory') {
+            steps {
+                echo 'PUBLISH: Start'
+
+				// PCF push with Gradle-PCF plugin
+				withCredentials([[
+					
+					// Configuration
+					$class          : 'UsernamePasswordMultiBinding',
+					credentialsId   : 'NEXUS-LOGIN',
+					usernameVariable: 'USERNAME',
+					passwordVariable: 'PASSWORD']]) {
+
+					// CF Command
+					sh './gradlew publish'
+				}
+				
+                echo 'PUBLISH: End'
             }
         }
     }
