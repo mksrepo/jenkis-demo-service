@@ -1,0 +1,6 @@
+applications:
+- name: jenkins-demo-service
+  memory: 1G
+  path: ./build/libs/jenkins-demo-servie-0.0.1-SNAPSHOT.jar
+  env:
+    SPRING_PROFILES_ACTIVE: cloud
