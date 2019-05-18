@@ -1,16 +1,23 @@
 pipeline {
-	agent docker 'node'
-	stages {
-		stage('Build') {
-			steps{
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'BUILD: Start'
 				sh './gradlew clean build'
-			}
-		}
-		stage('Archive Dependencies List') {
-			steps{
-				sh './gradlew listDependencies'
-				archiveArtifacts artifacts: 'buils/reports/dependencies.csv', fingerprint: true
-			}
-		}
-	}
+				echo 'BUILD: End'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
 }
