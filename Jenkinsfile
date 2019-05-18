@@ -1,13 +1,15 @@
 pipeline {
 	stages {
 		stage('Build') {
-			
+			steps{
+				sh './gradlew clean build'
+			}
 		}
-		stage('Test') {
-			
-		}
-		stage('Build image') {
-			
+		stage('Archive Dependencies List') {
+			steps{
+				sh './gradlew listDependencies'
+				archiveArtifacts artifacts: 'buils/reports/dependencies.csv', fingerprint: true
+			}
 		}
 	}
 }
